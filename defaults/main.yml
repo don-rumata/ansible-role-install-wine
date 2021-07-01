@@ -1,2 +1,14 @@
 ---
-# defaults file for ansible-role-install-wine
+#--- Version section ---#
+
+win_branch: stable
+# win_branch: devel
+# win_branch: staging
+
+#--- Repo section ---#
+
+wine_gpg_url: https://dl.winehq.org/wine-builds/winehq.key
+
+# If you *NOT* use apt-cacher-ng or other caching proxy - select "https".
+http_or_https: http
+# http_or_https: https
