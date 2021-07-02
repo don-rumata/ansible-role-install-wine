@@ -26,13 +26,10 @@ Install [Wine](https://winehq.org) for Linux.
     - name: EL (CentOS)
       versions:
         - 8
-        - 7
     - name: opensuse
       vesrion:
         - tumbleweed
-    - name: ArchLinux
-      version:
-        - any
+        - Leap
 ```
 
 ## Requirements
@@ -48,6 +45,10 @@ None.
 None.
 
 ## Example Playbook
+
+### I
+
+Install Wine and winetricks on any [supported](#work_on) Linux:
 
 `install-wine.yml`:
 
