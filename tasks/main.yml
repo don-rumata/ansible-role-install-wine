@@ -1,2 +1,7 @@
 ---
-# tasks file for ansible-role-install-wine
+- import_tasks: update-cache.yml
+  when: ansible_virtualization_type == 'docker'
+
+- import_tasks: install-dependencies.yml
+
+- import_tasks: add-repo.yml

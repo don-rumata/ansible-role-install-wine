@@ -27,11 +27,6 @@
       main'
     state: present
     filename: wine
-  tags:
-    - linux
-    - debian
-    - ubuntu
-    - wine
 
 #---
 
@@ -45,7 +40,7 @@
     file: wine
     name: WineHQ
     description: WineHQ packages
-    baseurl: '{{ http_or_https }}://dl.winehq.org/{{ ansible_lsb.id | lower }}/{{ ansible_distribution_major_version }}/prod'
+    baseurl: '{{ http_or_https }}://dl.winehq.org/{{ ansible_lsb.id | lower }}/{{ ansible_distribution_major_version }}'
     gpgkey: '{{ wine_repo_rpm_key }}'
     enabled: yes
     gpgcheck: yes
