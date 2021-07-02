@@ -20,7 +20,8 @@
     wine_package_name_default: wine-{{ wine_branch }}
   block:
     - package:
-        name: "{{ wine_package_name | default('wine') }}"
+        # name: "{{ wine_package_name | default('wine') }}"
+        name: "{{ wine_package_name | default('wine-32bit') }}"
         state: present
       when: wine_branch == 'stable'
     - package:
