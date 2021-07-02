@@ -11,6 +11,7 @@ Install [Wine](https://winehq.org) for Linux.
     - name: Fedora
       versions:
         - 33
+        - 34
     - name: Ubuntu
       versions:
         - focal
@@ -23,13 +24,10 @@ Install [Wine](https://winehq.org) for Linux.
         - buster
         - stable
         - testing
-    - name: EL (CentOS)
-      versions:
-        - 8
     - name: opensuse
       vesrion:
         - tumbleweed
-        - Leap
+        - 15.3
 ```
 
 ## Requirements
@@ -38,7 +36,33 @@ Install [Wine](https://winehq.org) for Linux.
 
 ## Role Variables
 
-None.
+```yaml
+#--- Version section ---#
+
+wine_branch: stable
+# wine_branch: devel
+# wine_branch: staging
+
+# wine_package_name: wine
+# wine_package_name: winehq-stable
+# wine_package_name: wine-mono
+# wine_package_name: wine-nine-standalone-32bit
+# wine_package_name: wine-staging-devel-32bit-debuginfo
+# wine_package_name: any-package-you-like
+
+wine_install_winetricks: true
+# wine_install_winetricks: false
+
+#--- Repo section ---#
+
+wine_gpg_key: https://dl.winehq.org/wine-builds/winehq.key
+wine_repo_deb_key: '{{ wine_gpg_key }}'
+wine_repo_rpm_key: '{{ wine_gpg_key }}'
+
+# If you *NOT* use apt-cacher-ng or other caching proxy - select "https".
+http_or_https: http
+# http_or_https: https
+```
 
 ## Dependencies
 
@@ -48,7 +72,7 @@ None.
 
 ### I
 
-Install Wine and winetricks on any [supported](#work_on) Linux:
+Install `wine` and `winetricks` on any [supported](#work_on) Linux:
 
 `install-wine.yml`:
 
@@ -60,6 +84,43 @@ Install Wine and winetricks on any [supported](#work_on) Linux:
     - "100%"
   roles:
     - ansible-role-install-wine
+  tasks:
+```
+
+### II
+
+Install only `wine`, without `winetricks`:
+
+`install-wine.yml`:
+
+```yaml
+- name: Install Wine
+  hosts: all
+  strategy: free
+  serial:
+    - "100%"
+  roles:
+    - role: ansible-role-install-wine
+      wine_install_winetricks: false
+  tasks:
+```
+
+### III
+
+Install `wine-devel-amd64`, without `winetricks`:
+
+`install-wine.yml`:
+
+```yaml
+- name: Install Wine
+  hosts: all
+  strategy: free
+  serial:
+    - "100%"
+  roles:
+    - role: ansible-role-install-wine
+      wine_install_winetricks: false
+      wine_package_name: wine-devel-amd64
   tasks:
 ```
 
