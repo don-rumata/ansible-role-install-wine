@@ -1,10 +1,9 @@
 ---
 # https://wiki.winehq.org/Download
-# https://wiki.winehq.org/Ubuntu
-# https://wiki.winehq.org/Debian
-# https://wiki.winehq.org/Fedora
 # https://en.opensuse.org/Wine#Repositories
 
+# https://wiki.winehq.org/Ubuntu
+# https://wiki.winehq.org/Debian
 - name: Add wine repo key 4 Debian\Ubuntu
   when:
     - ansible_os_family == 'Debian'
@@ -30,6 +29,7 @@
 
 #---
 
+# https://wiki.winehq.org/Fedora
 # https://dl.winehq.org/wine-builds/fedora/34/winehq.repo
 - name: Add repo wine 4 Fedora\CentOS 8+
   when:
@@ -48,51 +48,34 @@
 
 #---
 
-- name: Add repo wine 4 openSUSE Leap
+# https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Leap_15.3/Emulators:Wine.repo
+- name: Add repo wine 4 {{ ansible_distribution }}
   when:
-    - ansible_system == 'Linux'
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
     - ansible_distribution == 'openSUSE Leap'
   become: yes
-  block:
-    - copy:
-        content: |
-          [packages-microsoft-com-prod]
-          name=packages-microsoft-com-prod
-          baseurl={{ http_or_https }}://dl.winehq.org/opensuse/{{ ansible_lsb.major_release }}/prod/
-          gpgkey=https://dl.winehq.org/keys/microsoft.asc
-          enabled=1
-          autorefresh=1
-          gpgcheck=1
-        dest: /etc/zypp/repos.d/packages-microsoft-com-prod.repo
-    # Don't support "apt_key"-like function.
-    - zypper_repository:
-        name: packages-microsoft-com-prod
-        repo: '{{ http_or_https }}://dl.winehq.org/opensuse/{{ ansible_lsb.major_release }}/prod/'
-        state: present
-        auto_import_keys: yes
-        runrefresh: yes
-        autorefresh: yes
+  zypper_repository:
+    name: Wine ({{ ansible_distribution }})
+    repo:
+      "{{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine/{{ ansible_distribution | replace(' ', '_') }}_{{ ansible_lsb.release }}/"
+    state: present
+    auto_import_keys: yes
+    runrefresh: yes
+    autorefresh: yes
 
-- name: Add repo wine 4 openSUSE Tumbleweed
+# https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
+- name: Add repo wine 4 {{ ansible_distribution }}
   when:
-    - ansible_system == 'Linux'
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
     - ansible_distribution == 'openSUSE Tumbleweed'
-    - wine_method_install != 'snap'
-  # https://stackoverflow.com/a/41356234
-  fail:
-    msg:
-      - "Fuc^W Microsoft don't support repo 4 openSUSE Tumbleweed: https://github.com/wine/runtime/issues/3527"
-      - "Try install .NET over Snap:"
-      - "1. Install Snap: https://github.com/don-rumata/ansible-role-install-snap"
-      - "2. Use var 'wine_method_install: snap'"
-      - "3. ?????"
-      - "4. PROFIT"
-
-# - package_facts:
-
-# # 4 debug
-# - pause:
+  become: yes
+  zypper_repository:
+    name: Wine ({{ ansible_distribution }})
+    repo:
+      "{{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine/{{ ansible_distribution | replace(' ', '_') }}/"
+    state: present
+    auto_import_keys: yes
+    runrefresh: yes
+    autorefresh: yes
