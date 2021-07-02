@@ -29,12 +29,25 @@
 
 #---
 
-# https://wiki.winehq.org/Fedora
-# https://dl.winehq.org/wine-builds/fedora/34/winehq.repo
-- name: Add repo wine 4 Fedora\CentOS 8+
+# https://wiki.winehq.org/CentOS/RHEL
+- name: Add EPEL repo 4 CentOS 8+\RHEL
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
+    - ansible_distribution != 'Fedora'
+  become: yes
+  package:
+    name:
+      - epel-release
+    state: present
+
+# https://wiki.winehq.org/Fedora
+# https://dl.winehq.org/wine-builds/fedora/34/winehq.repo
+- name: Add repo wine 4 Fedora
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_pkg_mgr == 'dnf'
+    - ansible_distribution != 'CentOS'
   become: yes
   yum_repository:
     file: wine
