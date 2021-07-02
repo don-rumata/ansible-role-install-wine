@@ -6,6 +6,7 @@ wine_branch: stable
 # wine_branch: staging
 
 # wine_package_name: wine
+# wine_package_name: winehq-stable
 # wine_package_name: wine-mono
 # wine_package_name: wine-nine-standalone-32bit
 # wine_package_name: wine-staging-devel-32bit-debuginfo

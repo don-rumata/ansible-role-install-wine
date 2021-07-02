@@ -2,8 +2,8 @@
 # https://wiki.winehq.org/Download
 # https://en.opensuse.org/Wine#Repositories
 
-# https://wiki.winehq.org/Ubuntu
 # https://wiki.winehq.org/Debian
+# https://wiki.winehq.org/Ubuntu
 - name: Add wine repo key 4 Debian\Ubuntu
   when:
     - ansible_os_family == 'Debian'
