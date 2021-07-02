@@ -5,3 +5,5 @@
 - import_tasks: install-dependencies.yml
 
 - import_tasks: add-repo.yml
+
+- import_tasks: install-wine.yml

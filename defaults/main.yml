@@ -1,15 +1,18 @@
 ---
 #--- Version section ---#
 
-win_branch: stable
-# win_branch: devel
-# win_branch: staging
+wine_branch: stable
+# wine_branch: devel
+# wine_branch: staging
+
+wine_install_winetricks: true
+# wine_install_winetricks: false
 
 #--- Repo section ---#
 
-win_gpg_key: https://dl.winehq.org/wine-builds/winehq.key
-wine_repo_deb_key: '{{ win_gpg_key }}'
-wine_repo_rpm_key: '{{ win_gpg_key }}'
+wine_gpg_key: https://dl.winehq.org/wine-builds/winehq.key
+wine_repo_deb_key: '{{ wine_gpg_key }}'
+wine_repo_rpm_key: '{{ wine_gpg_key }}'
 
 # If you *NOT* use apt-cacher-ng or other caching proxy - select "https".
 http_or_https: http

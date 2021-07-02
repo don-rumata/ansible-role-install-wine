@@ -1,0 +1,19 @@
+---
+- name: Install Wine
+  when:
+    - ansible_system == 'Linux'
+    - wine_branch == 'stable'
+  become: yes
+  package:
+    name: wine
+    state: present
+
+- name: Install Winetricks
+  when:
+    - ansible_system == 'Linux'
+    # - wine_install_winetricks == true
+    - wine_install_winetricks
+  become: yes
+  package:
+    name: winetricks
+    state: present
