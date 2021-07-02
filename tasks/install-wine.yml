@@ -2,11 +2,31 @@
 - name: Install Wine
   when:
     - ansible_system == 'Linux'
-    - wine_branch == 'stable'
+    - ansible_os_family != 'Suse'
   become: yes
+  vars:
+    wine_package_name_default: wine-{{ wine_branch }}
   package:
-    name: wine
+    name: "{{ wine_package_name | default(wine_package_name_default) }}"
     state: present
+
+# Fucking dirty hack 4 Suse, because 'wine-stable' in repo named as 'wine'. HATE HATE HATE!!!
+- name: Install Wine 4 {{ ansible_os_family }}
+  when:
+    - ansible_system == 'Linux'
+    - ansible_os_family == 'Suse'
+  become: yes
+  vars:
+    wine_package_name_default: wine-{{ wine_branch }}
+  block:
+    - package:
+        name: "{{ wine_package_name | default('wine') }}"
+        state: present
+      when: wine_branch == 'stable'
+    - package:
+        name: "{{ wine_package_name | default(wine_package_name_default) }}"
+        state: present
+      when: wine_branch != 'stable'
 
 - name: Install Winetricks
   when:
