@@ -68,6 +68,24 @@ http_or_https: http
 
 None.
 
+## HowTo
+
+### How to install role
+
+Over `ansible-galaxy`:
+
+```bash
+ansible-galaxy install don_rumata.ansible_role_install_wine
+```
+
+Over `bash+git`:
+
+```bash
+mkdir -p "$HOME/.ansible/roles"
+cd "$HOME/.ansible/roles"
+git clone https://github.com/don-rumata/ansible-role-install-wine don_rumata.ansible_role_install_wine
+```
+
 ## Example Playbook
 
 ### I
@@ -83,7 +101,7 @@ Install `wine` and `winetricks` on any [supported](#work_on) Linux:
   serial:
     - "100%"
   roles:
-    - ansible-role-install-wine
+    - don_rumata.ansible_role_install_wine
   tasks:
 ```
 
@@ -100,7 +118,7 @@ Install only `wine`, without `winetricks`:
   serial:
     - "100%"
   roles:
-    - role: ansible-role-install-wine
+    - role: don_rumata.ansible_role_install_wine
       wine_install_winetricks: false
   tasks:
 ```
@@ -118,7 +136,7 @@ Install `wine-devel-amd64`, without `winetricks`:
   serial:
     - "100%"
   roles:
-    - role: ansible-role-install-wine
+    - role: don_rumata.ansible_role_install_wine
       wine_install_winetricks: false
       wine_package_name: wine-devel-amd64
   tasks:
