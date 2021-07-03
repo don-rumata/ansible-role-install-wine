@@ -4,6 +4,21 @@
 
 # https://wiki.winehq.org/Debian
 # https://wiki.winehq.org/Ubuntu
+# https://stackoverflow.com/a/33377943/5430535
+- name: Add amd64 and i386 arch 4 Debian\Ubuntu
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+  become: yes
+  lineinfile:
+    dest: /var/lib/dpkg/arch
+    line: "{{ item }}"
+    state: present
+    create: yes
+  with_items:
+    - amd64
+    - i386
+
 - name: Add wine repo key 4 Debian\Ubuntu
   when:
     - ansible_os_family == 'Debian'
