@@ -152,7 +152,7 @@
     file: wine
     name: WineHQ
     description: WineHQ packages
-    baseurl: '{{ http_or_https }}://dl.winehq.org/{{ ansible_lsb.id | lower }}/{{ ansible_distribution_major_version }}'
+    baseurl: '{{ http_or_https }}://dl.winehq.org/wine-builds/{{ ansible_lsb.id | lower }}/{{ ansible_distribution_major_version }}'
     gpgkey: '{{ wine_repo_rpm_key }}'
     enabled: yes
     gpgcheck: yes
