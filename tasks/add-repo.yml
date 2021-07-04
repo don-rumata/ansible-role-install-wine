@@ -23,13 +23,24 @@
 
 # https://askubuntu.com/a/1205535
 
+- name: Get info about enabled repo components (contrib)
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+  shell: grep -v '#' /etc/apt/sources.list | grep -v src | grep contrib
+  register: etc_apt_sources_list
+  ignore_errors: yes
+  changed_when: false
+
 - name: Set fact about part of OBS deb repo
   block:
     - set_fact:
         wine_obs_distro_name_fact: Debian
+        wine_obs_distro_version_fact: "{{ ansible_distribution_major_version }}"
       when: ansible_distribution == 'Debian'
     - set_fact:
         wine_obs_distro_name_fact: xUbuntu
+        wine_obs_distro_version_fact: "{{ ansible_distribution_version }}"
       when: ansible_distribution == 'Ubuntu'
 
 - name: Add Wine OBS repo key 4 Ubuntu 18.04
@@ -44,7 +55,7 @@
       (ansible_distribution_release == 'bionic')
   become: yes
   vars:
-    wine_obs_repo_deb_key: https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ ansible_distribution_version }}/Release.key
+    wine_obs_repo_deb_key: https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ wine_obs_distro_version_fact }}/Release.key
   apt_key:
     url: "{{ wine_obs_repo_deb_key }}"
     state: present
@@ -83,9 +94,24 @@
   apt_repository:
     repo:
       'deb
-      {{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ ansible_distribution_version }}/ /'
+      {{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ wine_obs_distro_version_fact }}/ /'
     state: present
     filename: wine-obs
+
+# https://www.linux.org.ru/forum/general/14131012?cid=14131586
+- name: Add contrib component 4 Debian 10
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_release == 'buster'
+    # - wine_install_winetricks == true
+    - wine_install_winetricks
+    - etc_apt_sources_list.rc == 1
+  become: yes
+  apt_repository:
+    repo: deb {{ http_or_https }}://deb.debian.org/debian {{ ansible_distribution_release }} contrib
+    state: present
 
 #--------------------#
 
