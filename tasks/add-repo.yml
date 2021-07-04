@@ -73,7 +73,7 @@
   become: yes
   copy:
     dest: /etc/apt/preferences.d/dependences-4-wine
-    mode: 644
+    mode: '644'
     content: |
       # https://askubuntu.com/a/1205535
       Package: libfaudio0
