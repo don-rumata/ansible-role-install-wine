@@ -19,7 +19,77 @@
     - amd64
     - i386
 
-- name: Add wine repo key 4 Debian\Ubuntu
+#--- Ubuntu 18.04\bionic, Debian 10 ---#
+
+# https://askubuntu.com/a/1205535
+
+- name: Set fact about part of OBS deb repo
+  block:
+    - set_fact:
+        wine_obs_distro_name_fact: Debian
+      when: ansible_distribution == 'Debian'
+    - set_fact:
+        wine_obs_distro_name_fact: xUbuntu
+      when: ansible_distribution == 'Ubuntu'
+
+- name: Add Wine OBS repo key 4 Ubuntu 18.04
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+    - (ansible_distribution == 'Debian')
+      or
+      (ansible_distribution == 'Ubuntu')
+    - (ansible_distribution_release == 'buster')
+      or
+      (ansible_distribution_release == 'bionic')
+  become: yes
+  vars:
+    wine_obs_repo_deb_key: https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ ansible_distribution_version }}/Release.key
+  apt_key:
+    url: "{{ wine_obs_repo_deb_key }}"
+    state: present
+
+- name: Config dependences config file 4 Ubuntu 18.04, Debian 10
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+    - (ansible_distribution == 'Debian')
+      or
+      (ansible_distribution == 'Ubuntu')
+    - (ansible_distribution_release == 'buster')
+      or
+      (ansible_distribution_release == 'bionic')
+  become: yes
+  copy:
+    dest: /etc/apt/preferences.d/dependences-4-wine
+    mode: 644
+    content: |
+      # https://askubuntu.com/a/1205535
+      Package: libfaudio0
+      Pin: release n={{ ansible_distribution_release }}
+      Pin-Priority: 500
+
+- name: Add Wine repo OBS 4 Ubuntu 18.04, Debian 10
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+    - (ansible_distribution == 'Debian')
+      or
+      (ansible_distribution == 'Ubuntu')
+    - (ansible_distribution_release == 'buster')
+      or
+      (ansible_distribution_release == 'bionic')
+  become: yes
+  apt_repository:
+    repo:
+      'deb
+      {{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ ansible_distribution_version }}/ /'
+    state: present
+    filename: wine-obs
+
+#--------------------#
+
+- name: Add Wine repo key 4 Debian\Ubuntu
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
@@ -28,7 +98,7 @@
     url: "{{ wine_repo_deb_key }}"
     state: present
 
-- name: Add wine repo 4 Debian\Ubuntu
+- name: Add Wine repo 4 Debian\Ubuntu
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
@@ -46,7 +116,7 @@
 
 # https://wiki.winehq.org/Fedora
 # https://dl.winehq.org/wine-builds/fedora/34/winehq.repo
-- name: Add repo wine 4 Fedora
+- name: Add repo Wine 4 Fedora
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
@@ -65,7 +135,7 @@
 #---
 
 # https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Leap_15.3/Emulators:Wine.repo
-- name: Add repo wine 4 {{ ansible_distribution }}
+- name: Add repo Wine 4 {{ ansible_distribution }}
   when:
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
@@ -81,7 +151,7 @@
     autorefresh: yes
 
 # https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
-- name: Add repo wine 4 {{ ansible_distribution }}
+- name: Add repo Wine 4 {{ ansible_distribution }}
   when:
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
