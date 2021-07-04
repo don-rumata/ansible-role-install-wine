@@ -14,16 +14,14 @@ Install [Wine](https://winehq.org) for Linux.
         - 34
     - name: Ubuntu
       versions:
-        - focal
-        - bionic
         - xenial
+        - bionic
+        - focal
     - name: Debian
       version:
-        - jessie
         - stretch
         - buster
-        - stable
-        - testing
+        - sid
     - name: opensuse
       vesrion:
         - tumbleweed

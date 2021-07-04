@@ -15,13 +15,11 @@ galaxy_info:
         - 34
     - name: Ubuntu
       versions:
-        - trusty
         - xenial
         - bionic
         - focal
     - name: Debian
       version:
-        - jessie
         - stretch
         - buster
         - sid
