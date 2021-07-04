@@ -162,4 +162,4 @@ Apache License, Version 2.0
 [circleci-image]: https://circleci.com/gh/don-rumata/ansible-role-install-wine.svg?style=shield
 [circleci-url]: https://circleci.com/gh/don-rumata/ansible-role-install-wine
 
-[ansible-galaxy-quality-image]: https://img.shields.io/ansible/quality/48079
+[ansible-galaxy-quality-image]: https://img.shields.io/ansible/quality/55561
