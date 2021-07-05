@@ -77,7 +77,8 @@
     content: |
       # https://askubuntu.com/a/1205535
       Package: libfaudio0
-      Pin: release n={{ ansible_distribution_release }}
+      # Pin: release n={{ ansible_distribution_release }}
+      Pin: origin download.opensuse.org
       Pin-Priority: 500
 
 - name: Add Wine repo OBS 4 Ubuntu 18.04, Debian 10
@@ -99,12 +100,11 @@
     filename: wine-obs
 
 # https://www.linux.org.ru/forum/general/14131012?cid=14131586
-- name: Add contrib component 4 Debian 10
+- name: Add contrib component 4 Debian
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
     - ansible_distribution == 'Debian'
-    - ansible_distribution_release == 'buster'
     # - wine_install_winetricks == true
     - wine_install_winetricks
     - etc_apt_sources_list.rc == 1
