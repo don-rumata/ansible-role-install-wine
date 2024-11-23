@@ -9,12 +9,12 @@
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
-  become: yes
+  become: true
   lineinfile:
     dest: /var/lib/dpkg/arch
     line: "{{ item }}"
     state: present
-    create: yes
+    create: true
   with_items:
     - amd64
     - i386
@@ -29,7 +29,7 @@
     - ansible_pkg_mgr == 'apt'
   shell: grep -v '#' /etc/apt/sources.list | grep -v src | grep contrib
   register: etc_apt_sources_list
-  ignore_errors: yes
+  ignore_errors: true
   changed_when: false
 
 - name: Set fact about part of OBS deb repo
@@ -53,7 +53,7 @@
     - (ansible_distribution_release == 'buster')
       or
       (ansible_distribution_release == 'bionic')
-  become: yes
+  become: true
   vars:
     wine_obs_repo_deb_key: https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/{{ wine_obs_distro_name_fact }}_{{ wine_obs_distro_version_fact }}/Release.key
   apt_key:
@@ -70,7 +70,7 @@
     - (ansible_distribution_release == 'buster')
       or
       (ansible_distribution_release == 'bionic')
-  become: yes
+  become: true
   copy:
     dest: /etc/apt/preferences.d/dependences-4-wine
     mode: '644'
@@ -91,7 +91,7 @@
     - (ansible_distribution_release == 'buster')
       or
       (ansible_distribution_release == 'bionic')
-  become: yes
+  become: true
   apt_repository:
     repo:
       'deb
@@ -108,7 +108,7 @@
     # - wine_install_winetricks == true
     - wine_install_winetricks
     - etc_apt_sources_list.rc == 1
-  become: yes
+  become: true
   apt_repository:
     repo: deb {{ http_or_https }}://deb.debian.org/debian {{ ansible_distribution_release }} contrib
     state: present
@@ -119,7 +119,7 @@
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
-  become: yes
+  become: true
   apt_key:
     url: "{{ wine_repo_deb_key }}"
     state: present
@@ -128,7 +128,7 @@
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
-  become: yes
+  become: true
   apt_repository:
     repo:
       'deb
@@ -147,15 +147,15 @@
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
     - ansible_distribution == 'Fedora'
-  become: yes
+  become: true
   yum_repository:
     file: wine
     name: WineHQ
     description: WineHQ packages
     baseurl: '{{ http_or_https }}://dl.winehq.org/wine-builds/{{ ansible_lsb.id | lower }}/{{ ansible_distribution_major_version }}'
     gpgkey: '{{ wine_repo_rpm_key }}'
-    enabled: yes
-    gpgcheck: yes
+    enabled: true
+    gpgcheck: true
     state: present
 
 #---
@@ -166,15 +166,15 @@
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
     - ansible_distribution == 'openSUSE Leap'
-  become: yes
+  become: true
   zypper_repository:
     name: Wine ({{ ansible_distribution }})
     repo:
       "{{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine/{{ ansible_distribution | replace(' ', '_') }}_{{ ansible_lsb.release }}/"
     state: present
-    auto_import_keys: yes
-    runrefresh: yes
-    autorefresh: yes
+    auto_import_keys: true
+    runrefresh: true
+    autorefresh: true
 
 # https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
 - name: Add repo Wine 4 {{ ansible_distribution }}
@@ -182,12 +182,12 @@
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
     - ansible_distribution == 'openSUSE Tumbleweed'
-  become: yes
+  become: true
   zypper_repository:
     name: Wine ({{ ansible_distribution }})
     repo:
       "{{ http_or_https }}://download.opensuse.org/repositories/Emulators:/Wine/{{ ansible_distribution | replace(' ', '_') }}/"
     state: present
-    auto_import_keys: yes
-    runrefresh: yes
-    autorefresh: yes
+    auto_import_keys: true
+    runrefresh: true
+    autorefresh: true

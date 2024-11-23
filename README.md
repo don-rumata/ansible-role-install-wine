@@ -152,6 +152,7 @@ Apache License, Version 2.0
 
 - ~~Add tests.~~
 - Add more tests.
+- Add `wine-gecko`.
 
 [license-image]: https://img.shields.io/github/license/don-rumata/ansible-role-install-wine.svg
 [license-url]: https://opensource.org/licenses/Apache-2.0

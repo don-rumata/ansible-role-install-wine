@@ -3,7 +3,7 @@
   when:
     - ansible_system == 'Linux'
     - ansible_os_family != 'Suse'
-  become: yes
+  become: true
   vars:
     wine_package_name_default: wine-{{ wine_branch }}
   package:
@@ -15,7 +15,7 @@
   when:
     - ansible_system == 'Linux'
     - ansible_os_family == 'Suse'
-  become: yes
+  become: true
   vars:
     wine_package_name_default: wine-{{ wine_branch }}
   block:
@@ -34,7 +34,7 @@
     - ansible_system == 'Linux'
     # - wine_install_winetricks == true
     - wine_install_winetricks
-  become: yes
+  become: true
   package:
     name: winetricks
     state: present
